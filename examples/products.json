@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Northstar Desk Lamp",
+    "category": "lighting",
+    "key_features": ["adjustable neck", "portable body", "USB-C charging"],
+    "price_offer": "$19.99",
+    "unique_selling_point": "Focused light for flexible workspaces.",
+    "brand_name": "Northstar",
+    "brand_tone": "trustworthy",
+    "language": "English"
+  },
+  {
+    "name": "TrailSip Bottle",
+    "category": "drinkware",
+    "key_features": ["easy-carry loop", "wide opening", "matte finish"],
+    "price_offer": "€24",
+    "unique_selling_point": "A simple bottle for everyday movement.",
+    "brand_name": "TrailSip",
+    "brand_tone": "playful",
+    "language": "English"
+  },
+  {
+    "name": "LedgerLeaf Planner",
+    "category": "stationery",
+    "key_features": ["weekly pages", "project notes", "compact format"],
+    "price_offer": null,
+    "unique_selling_point": "A calm place to organize priorities.",
+    "brand_name": "LedgerLeaf",
+    "brand_tone": "premium",
+    "language": "English"
+  }
+]

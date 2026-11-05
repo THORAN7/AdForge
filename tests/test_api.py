@@ -70,3 +70,20 @@ def test_request_size_limit_has_consistent_error_shape() -> None:
     )
     assert response.status_code == 413
     assert response.json()["error"] == "request_too_large"
+
+
+def test_export_endpoint_returns_canonical_json() -> None:
+    payload = {
+        "product": {
+            "name": "Focus Lamp",
+            "category": "lighting",
+            "key_features": ["adjustable", "portable", "USB-C"],
+            "unique_selling_point": "Flexible workspace light",
+            "brand_name": "Northstar",
+            "brand_tone": "trustworthy",
+        },
+        "audiences": [{"preset": "gen_z_students"}],
+    }
+    response = TestClient(app).post("/api/export/json", json=payload)
+    assert response.status_code == 200
+    assert response.json()["product"]["name"] == "Focus Lamp"
