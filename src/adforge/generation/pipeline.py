@@ -24,6 +24,7 @@ from adforge.models import (
     VisualConcepts,
     XContent,
 )
+from adforge.visuals import render_preview_cards
 
 
 def _offer_line(product: ProductInput) -> str:
@@ -184,6 +185,10 @@ def _social(
 
 def _visuals(product: ProductInput, brief: CreativeBrief) -> VisualConcepts:
     palette = product.brand_colors or ["#0B1020", "#7DD3FC", "#E7EEFB"]
+    storyboard = [
+        f"Frame {number}: show {product.name} and supplied product facts."
+        for number in range(1, 7)
+    ]
     return VisualConcepts(
         art_direction=(
             f"{brief.imagery_style or 'clean product-in-use imagery'}; "
@@ -200,10 +205,8 @@ def _visuals(product: ProductInput, brief: CreativeBrief) -> VisualConcepts:
             f"Headline at top; {product.name} centered; "
             f"CTA '{brief.cta}' at bottom. {_offer_line(product)}"
         ),
-        storyboard=[
-            f"Frame {number}: show {product.name} and supplied product facts."
-            for number in range(1, 7)
-        ],
+        storyboard=storyboard,
+        svg_previews=render_preview_cards(product.name, storyboard, palette),
     )
 
 

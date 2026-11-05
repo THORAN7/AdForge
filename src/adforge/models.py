@@ -256,6 +256,7 @@ class VisualConcepts(BaseModel):
     hero_concepts: list[StringItem] = Field(default_factory=list, max_length=3)
     poster_layout: str = ""
     storyboard: list[StringItem] = Field(default_factory=list, max_length=8)
+    svg_previews: list[str] = Field(default_factory=list, max_length=9)
 
 
 class VideoScene(BaseModel):
