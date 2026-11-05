@@ -13,7 +13,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 from adforge import __version__
 from adforge.audiences import list_profiles
 from adforge.config import Settings, get_settings
-from adforge.generation import TemplateProvider
+from adforge.generation import provider_for
 from adforge.models import AdPackage, AudienceProfile, GenerateRequest
 
 
@@ -132,7 +132,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @application.post("/api/generate", response_model=list[AdPackage])
     def generate(request: GenerateRequest) -> list[AdPackage]:
         """Generate one deterministic package per selected audience."""
-        provider = TemplateProvider()
+        provider = provider_for(runtime_settings)
         return [
             provider.generate(request.product, audience)
             for audience in request.audiences
@@ -141,7 +141,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @application.post("/api/generate/compare", response_model=list[AdPackage])
     def compare(request: GenerateRequest) -> list[AdPackage]:
         """Generate packages for side-by-side audience comparison."""
-        provider = TemplateProvider()
+        provider = provider_for(runtime_settings)
         return [
             provider.generate(request.product, audience)
             for audience in request.audiences
@@ -162,7 +162,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 status_code=422,
                 detail=f"unsupported section: {section}",
             )
-        provider = TemplateProvider()
+        provider = provider_for(runtime_settings)
         return [
             provider.generate(request.product, audience)
             for audience in request.audiences
