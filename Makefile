@@ -16,6 +16,8 @@ lint:
 format:
 	python -m ruff format .
 
+format-check:
+	python -m ruff format --check .
+
 typecheck:
 	python -m mypy src
-

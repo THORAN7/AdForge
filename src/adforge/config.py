@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,7 +14,7 @@ class Settings(BaseSettings):
     host: str = "127.0.0.1"
     port: int = 8000
     llm_provider: str = "template"
-    llm_api_key: str | None = None
+    llm_api_key: SecretStr | None = None
     llm_model: str | None = None
     allow_external_llm: bool = False
     max_upload_bytes: int = 5 * 1024 * 1024
@@ -29,4 +30,3 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     """Return the process-wide settings instance."""
     return Settings()
-

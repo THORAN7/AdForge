@@ -12,3 +12,9 @@
   models so API, UI, and exporters share one schema.
 - **Windows developer path:** because GNU Make is not included with Windows,
   `scripts/adforge.ps1` provides equivalent commands using the project venv.
+- **Phase 1.5 static packaging:** the web page is stored in `src/adforge/static`
+  and included as package data so editable installs, wheels, and containers use
+  the same asset.
+- **Audience registry boundary:** Phase 1.5 validates the nine planned preset
+  identifiers through `adforge.audiences`; Phase 2 will replace the identifier
+  set with JSON-backed profile loading without changing the request contract.

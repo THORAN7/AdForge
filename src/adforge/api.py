@@ -1,42 +1,152 @@
-"""FastAPI application entry point and stable health endpoint."""
+"""FastAPI application entry point and local web interface."""
 
+from collections.abc import AsyncIterator, Awaitable, Callable
+from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import FileResponse, JSONResponse, Response
+from fastapi.staticfiles import StaticFiles
+from starlette.types import ASGIApp, Receive, Scope, Send
 
 from adforge import __version__
-from adforge.config import get_settings
+from adforge.config import Settings, get_settings
 from adforge.models import GenerateRequest
 
-settings = get_settings()
-app = FastAPI(title=settings.app_name, version=__version__)
-STATIC_INDEX = Path(__file__).resolve().parents[2] / "static" / "index.html"
+
+class RequestSizeLimitMiddleware:
+    """Reject requests larger than the configured limit before body parsing."""
+
+    def __init__(self, app: ASGIApp, max_bytes: int) -> None:
+        self.app = app
+        self.max_bytes = max_bytes
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] == "http":
+            content_length = next(
+                (
+                    value
+                    for key, value in scope.get("headers", [])
+                    if key.lower() == b"content-length"
+                ),
+                None,
+            )
+            if content_length is not None:
+                try:
+                    too_large = int(content_length) > self.max_bytes
+                except ValueError:
+                    too_large = True
+                if too_large:
+                    response = JSONResponse(
+                        {
+                            "error": "request_too_large",
+                            "message": "Request exceeds the configured size limit.",
+                            "details": {"max_bytes": self.max_bytes},
+                        },
+                        status_code=413,
+                    )
+                    await response(scope, receive, send)
+                    return
+        await self.app(scope, receive, send)
 
 
-@app.get("/")
-def root() -> FileResponse:
-    """Serve the local browser landing page."""
-    return FileResponse(STATIC_INDEX, media_type="text/html")
+def _error(
+    error: str, message: str, details: object = None, status_code: int = 500
+) -> JSONResponse:
+    return JSONResponse(
+        {"error": error, "message": message, "details": details},
+        status_code=status_code,
+    )
 
 
-@app.get("/api/health")
-def health() -> dict[str, str]:
-    """Report service availability without exposing secrets or configuration."""
-    return {"status": "ok", "service": settings.app_name, "version": __version__}
+def create_app(settings: Settings | None = None) -> FastAPI:
+    """Build an application instance with explicitly supplied test settings."""
+    runtime_settings = settings or get_settings()
+    static_dir = Path(__file__).parent / "static"
+
+    @asynccontextmanager
+    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        yield
+
+    application = FastAPI(
+        title=runtime_settings.app_name,
+        version=__version__,
+        lifespan=lifespan,
+    )
+    application.add_middleware(
+        RequestSizeLimitMiddleware, max_bytes=runtime_settings.max_upload_bytes
+    )
+
+    @application.middleware("http")
+    async def security_headers(
+        request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
+        response = await call_next(request)
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; style-src 'self' 'unsafe-inline'; "
+            "script-src 'self' 'unsafe-inline'"
+        )
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Referrer-Policy"] = "no-referrer"
+        return response
+
+    @application.exception_handler(RequestValidationError)
+    async def validation_error(_: Request, exc: RequestValidationError) -> JSONResponse:
+        return _error(
+            "validation_error",
+            "Request validation failed.",
+            {"errors": exc.errors()},
+            422,
+        )
+
+    @application.exception_handler(HTTPException)
+    async def http_error(_: Request, exc: HTTPException) -> JSONResponse:
+        return _error("http_error", str(exc.detail), None, exc.status_code)
+
+    @application.exception_handler(Exception)
+    async def unhandled_error(_: Request, __: Exception) -> JSONResponse:
+        return _error("internal_error", "An unexpected error occurred.", None, 500)
+
+    @application.get("/")
+    def root() -> FileResponse:
+        """Serve the local browser landing page."""
+        return FileResponse(static_dir / "index.html", media_type="text/html")
+
+    @application.get("/api/health")
+    def health() -> dict[str, str]:
+        """Report service availability without exposing secrets or configuration."""
+        return {
+            "status": "ok",
+            "service": runtime_settings.app_name,
+            "version": __version__,
+        }
+
+    @application.post("/api/generate", status_code=501)
+    def generate(_: GenerateRequest) -> JSONResponse:
+        """Reserve the generation contract for the next implementation phase."""
+        return _error(
+            "generation_not_implemented",
+            "Generation is not implemented yet.",
+            {"planned_phase": 3},
+            501,
+        )
+
+    application.mount("/static", StaticFiles(directory=static_dir), name="static")
+    return application
 
 
-@app.post("/api/generate", status_code=501)
-def generate(_: GenerateRequest) -> dict[str, str]:
-    """Reserve the generation contract for the next implementation phase."""
-    return {
-        "error": "generation_not_implemented",
-        "message": "Phase 3 adds generation.",
-    }
+app = create_app()
 
 
 def run() -> None:
     """Run the local development server."""
     import uvicorn
 
-    uvicorn.run("adforge.api:app", host=settings.host, port=settings.port, reload=False)
+    settings = get_settings()
+    uvicorn.run(
+        "adforge.api:app",
+        host=settings.host,
+        port=settings.port,
+        reload=False,
+    )

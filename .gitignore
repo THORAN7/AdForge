@@ -11,8 +11,9 @@ build/
 *.egg-info/
 .env
 .idea/
+.vscode/
+.DS_Store
 data/generated/
 data/uploads/
 !data/.gitkeep
 !docs/images/.gitkeep
-

@@ -8,8 +8,16 @@ version = "0.1.0"
 description = "AI-based product advertisement generator."
 readme = "README.md"
 requires-python = ">=3.11"
-license = {file = "LICENSE"}
+license = "MIT"
 authors = [{name = "AdForge Contributors"}]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: FastAPI",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+urls = {Homepage = "https://github.com/THORAN7/adforge", Repository = "https://github.com/THORAN7/adforge"}
 dependencies = [
   "fastapi>=0.115,<1",
   "pydantic>=2.7,<3",
@@ -33,6 +41,9 @@ adforge = "adforge.api:run"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+adforge = ["py.typed", "static/*.html"]
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
@@ -50,4 +61,3 @@ packages = ["adforge"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov=adforge --cov-report=term-missing --cov-fail-under=85"
-

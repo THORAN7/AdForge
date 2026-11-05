@@ -4,4 +4,3 @@
 def delete_local_data() -> None:
     """Delete generated local data once storage is introduced."""
     return None
-

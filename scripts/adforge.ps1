@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet("install", "run", "test", "lint", "format", "typecheck")]
+    [ValidateSet("install", "run", "test", "lint", "format", "format-check", "typecheck")]
     [string] $Command
 )
 
@@ -28,6 +28,9 @@ switch ($Command) {
     }
     "format" {
         & $python -m ruff format .
+    }
+    "format-check" {
+        & $python -m ruff format --check .
     }
     "typecheck" {
         & $python -m mypy src
