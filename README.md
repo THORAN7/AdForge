@@ -4,29 +4,43 @@
 
 AdForge is a local-first FastAPI application. Phase 1 establishes the typed input/output contract and development tooling; generation and exports arrive in subsequent phases.
 
-## Development
+## Run locally
 
 ### Windows PowerShell
 
-If `.venv` already exists, do not run `python -m venv .venv` again. Activate
-the existing environment and install dependencies directly:
+Open PowerShell in the project directory. If `.venv` is already present, do
+not recreate it.
 
 ```powershell
 if (-not (Test-Path .venv\Scripts\python.exe)) {
     python -m venv .venv
 }
 .venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
-python -m pytest
+python -m uvicorn adforge.api:app --host 127.0.0.1 --port 8000
 ```
 
-GNU Make is not installed by default on Windows. The equivalent commands are
-available through `.\scripts\adforge.ps1 install`, `.\scripts\adforge.ps1 test`,
-`.\scripts\adforge.ps1 lint`, `.\scripts\adforge.ps1 typecheck`, and
-`.\scripts\adforge.ps1 run`. If PowerShell blocks local scripts, invoke one as
-`powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 test`, or use
-the direct `python -m ...` commands above without changing execution policy.
+The API is then available at `http://127.0.0.1:8000`. Check that it is running
+by opening `http://127.0.0.1:8000/api/health`.
+
+Stop the server with `Ctrl+C`.
+
+For development checks, run:
+
+```powershell
+python -m pytest
+python -m ruff check .
+python -m mypy src
+```
+
+GNU Make is not installed by default on Windows. You can use the equivalent
+PowerShell wrapper commands:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 install
+powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 run
+powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 test
+```
 
 ### Unix-like shells
 
@@ -34,9 +48,9 @@ the direct `python -m ...` commands above without changing execution policy.
 python -m venv .venv
 . .venv/bin/activate
 make install
-make test
+make run
 ```
 
-Run the API with `.\scripts\adforge.ps1 run` or `make run`, then visit
-`http://127.0.0.1:8000/api/health`.
+Then visit `http://127.0.0.1:8000/api/health`.
+
 See `docs/DECISIONS.md` for intentionally scoped implementation choices.
