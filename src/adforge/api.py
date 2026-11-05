@@ -96,9 +96,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @application.exception_handler(RequestValidationError)
     async def validation_error(_: Request, exc: RequestValidationError) -> JSONResponse:
+        fields = "; ".join(
+            f"{'.'.join(str(part) for part in error['loc'])}: {error['msg']}"
+            for error in exc.errors()
+        )
         return _error(
             "validation_error",
-            "Request validation failed.",
+            f"Request validation failed. {fields}",
             {"errors": exc.errors()},
             422,
         )
@@ -114,7 +118,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @application.get("/")
     def root() -> FileResponse:
         """Serve the local browser landing page."""
-        return FileResponse(static_dir / "index.html", media_type="text/html")
+        return FileResponse(
+            static_dir / "index.html",
+            media_type="text/html",
+            headers={"Cache-Control": "no-store, max-age=0"},
+        )
 
     @application.get("/api/health")
     def health() -> dict[str, str]:
