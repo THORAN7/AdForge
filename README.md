@@ -20,8 +20,11 @@ python -m pip install -e ".[dev]"
 python -m uvicorn adforge.api:app --host 127.0.0.1 --port 8000
 ```
 
-The API is then available at `http://127.0.0.1:8000`. Check that it is running
-by opening `http://127.0.0.1:8000/api/health`.
+The API is then available at `http://127.0.0.1:8000`. Open that address for a
+small status response, or use:
+
+- `http://127.0.0.1:8000/api/health` for the health check
+- `http://127.0.0.1:8000/docs` for the interactive API documentation
 
 Stop the server with `Ctrl+C`.
 

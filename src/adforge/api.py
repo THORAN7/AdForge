@@ -10,6 +10,18 @@ settings = get_settings()
 app = FastAPI(title=settings.app_name, version=__version__)
 
 
+@app.get("/")
+def root() -> dict[str, str]:
+    """Provide a useful landing response for local development."""
+    return {
+        "service": settings.app_name,
+        "version": __version__,
+        "message": "AdForge API is running.",
+        "health": "/api/health",
+        "docs": "/docs",
+    }
+
+
 @app.get("/api/health")
 def health() -> dict[str, str]:
     """Report service availability without exposing secrets or configuration."""
