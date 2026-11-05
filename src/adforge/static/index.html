@@ -1,66 +1,48 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="AdForge product advertisement generator">
-    <title>AdForge | Product advertisement generator</title>
-    <style>
-      :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
-      * { box-sizing: border-box; }
-      body { margin: 0; min-height: 100vh; color: #e7eefb; background: #0b1020; }
-      main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 28px 0 64px; }
-      nav { display: flex; justify-content: space-between; align-items: center; }
-      .brand { color: #fff; font-size: 1.3rem; font-weight: 800; letter-spacing: -.04em; }
-      .brand span { color: #7dd3fc; }
-      nav a { color: #a9b8d2; text-decoration: none; margin-left: 20px; }
-      nav a:hover, nav a:focus { color: #fff; }
-      .hero { display: grid; grid-template-columns: 1.2fr .8fr; gap: 48px; align-items: center; padding: 100px 0 80px; }
-      .eyebrow { color: #7dd3fc; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: .75rem; }
-      h1 { max-width: 720px; margin: 14px 0 20px; font-size: clamp(2.6rem, 7vw, 5.6rem); line-height: .96; letter-spacing: -.07em; }
-      .intro { max-width: 600px; color: #a9b8d2; font-size: 1.15rem; line-height: 1.65; }
-      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-      .button { display: inline-block; padding: 12px 18px; border-radius: 10px; color: #06111f; background: #7dd3fc; font-weight: 800; text-decoration: none; }
-      .button.secondary { color: #e7eefb; background: #18243a; border: 1px solid #2a3a58; }
-      .card { padding: 28px; border: 1px solid #263756; border-radius: 20px; background: linear-gradient(145deg, #15223a, #10182b); box-shadow: 0 24px 70px #02061766; }
-      .card h2 { margin-top: 0; }
-      .status { display: flex; align-items: center; gap: 10px; color: #a9b8d2; }
-      .dot { width: 10px; height: 10px; border-radius: 50%; background: #34d399; box-shadow: 0 0 14px #34d399; }
-      .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-      .feature { padding: 22px; border-top: 2px solid #2a3a58; color: #a9b8d2; line-height: 1.55; }
-      .feature strong { display: block; margin-bottom: 8px; color: #fff; }
-      footer { margin-top: 70px; color: #6f809d; font-size: .9rem; }
-      @media (max-width: 760px) { .hero { grid-template-columns: 1fr; padding: 70px 0 50px; } .features { grid-template-columns: 1fr; } nav a { margin-left: 10px; } }
-    </style>
-  </head>
-  <body>
-    <main>
-      <nav aria-label="Primary navigation">
-        <div class="brand">Ad<span>Forge</span></div>
-        <div><a href="/docs">API docs</a><a href="/api/health">Health</a></div>
-      </nav>
-      <section class="hero">
-        <div>
-          <div class="eyebrow">Grounded campaign creation</div>
-          <h1>Turn product facts into better ads.</h1>
-          <p class="intro">AdForge creates audience-aware product descriptions, promotional copy, social content, visual concepts, and video narration from the facts you provide.</p>
-          <div class="actions">
-            <a class="button" href="/docs">Open API docs</a>
-            <a class="button secondary" href="/api/health">Check service health</a>
-          </div>
-        </div>
-        <aside class="card" aria-labelledby="status-title">
-          <h2 id="status-title">Local service status</h2>
-          <p class="status"><span class="dot" aria-hidden="true"></span> AdForge API is running</p>
-          <p>The local-first workspace is ready for grounded product and audience-aware campaign creation.</p>
-        </aside>
-      </section>
-      <section class="features" aria-label="AdForge capabilities">
-        <div class="feature"><strong>Audience-aware</strong>Adapt messaging for different customer profiles without relying on harmful stereotypes.</div>
-        <div class="feature"><strong>Fact-grounded</strong>Keep generated claims tied to the product information you provide.</div>
-        <div class="feature"><strong>Local-first</strong>Run privately on your machine with no API key required for the offline mode.</div>
-      </section>
-      <footer>AdForge 0.1.0 · Local development interface</footer>
-    </main>
-  </body>
-</html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdForge | Grounded campaign generator</title>
+  <style>
+    :root{font-family:Inter,system-ui,sans-serif;color:#e7eefb;background:#0b1020}
+    *{box-sizing:border-box}body{margin:0}main{width:min(1100px,calc(100% - 32px));margin:auto;padding:28px 0 64px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}.brand{font-size:1.4rem;font-weight:800}.brand span{color:#7dd3fc}
+    a{color:#7dd3fc}.hero{padding:28px 0}.hero h1{font-size:clamp(2rem,6vw,4.5rem);line-height:1;margin:0 0 16px}.muted{color:#a9b8d2;line-height:1.6}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.panel{background:#121d33;border:1px solid #2a3a58;border-radius:16px;padding:22px;margin-top:18px}
+    label{display:block;color:#a9b8d2;font-size:.9rem;margin:12px 0 6px}input,textarea,select{width:100%;padding:11px;border:1px solid #385072;border-radius:8px;background:#0b1020;color:#fff;font:inherit}
+    textarea{min-height:84px;resize:vertical}.button{border:0;border-radius:8px;padding:12px 18px;background:#7dd3fc;color:#06111f;font-weight:800;cursor:pointer;margin-top:16px}
+    .button.secondary{background:#233451;color:#fff}.status{margin-top:14px;min-height:1.3em}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.tab{background:#233451;color:#fff;border:0;border-radius:7px;padding:9px;cursor:pointer}.tab.active{background:#7dd3fc;color:#06111f}
+    pre{white-space:pre-wrap;overflow:auto;line-height:1.5;color:#dbeafe}.warning{color:#fbbf24}.score{font-size:2rem;color:#34d399}@media(max-width:700px){.grid{grid-template-columns:1fr}header{align-items:flex-start;gap:12px;flex-direction:column}}
+  </style>
+</head>
+<body><main>
+  <header><div class="brand">Ad<span>Forge</span></div><nav><a href="/docs">API docs</a> · <a href="/api/health">Health</a></nav></header>
+  <section class="hero"><p class="muted">Grounded, audience-aware advertising packages from the facts you provide.</p>
+    <h1>Turn product facts into a complete campaign.</h1>
+    <div class="panel">
+      <form id="form">
+        <div class="grid"><div><label for="name">Product name</label><input id="name" required>
+          <label for="category">Category</label><input id="category" required>
+          <label for="brand">Brand name</label><input id="brand" required>
+          <label for="tone">Brand tone</label><input id="tone" value="trustworthy" required>
+          <label for="offer">Price or offer</label><input id="offer" placeholder="Optional"></div>
+          <div><label for="features">Key features (one per line, 3-8)</label><textarea id="features" required></textarea>
+            <label for="usp">Unique selling point</label><textarea id="usp" required></textarea>
+            <label for="audience">Audience</label><select id="audience"></select></div></div>
+        <button class="button" type="submit">Generate campaign</button><span id="status" class="status" aria-live="polite"></span>
+      </form>
+    </div>
+  </section>
+  <section id="results" class="panel" hidden><div id="score" class="score"></div><div class="tabs" role="tablist"></div><pre id="output"></pre>
+    <div><button class="button secondary export" data-format="json">Export JSON</button><button class="button secondary export" data-format="markdown">Export Markdown</button><button class="button secondary export" data-format="zip">Campaign ZIP</button></div>
+  </section>
+</main>
+<script>
+const audience=document.querySelector("#audience"),status=document.querySelector("#status"),results=document.querySelector("#results"),output=document.querySelector("#output"),tabs=document.querySelector(".tabs");
+let packages=[],active="product_descriptions";
+async function loadAudiences(){const r=await fetch("/api/audiences");(await r.json()).forEach(a=>{const o=document.createElement("option");o.value=a.id;o.textContent=a.name;audience.append(o)})}
+function show(){const p=packages[0];document.querySelector("#score").textContent=`Quality score: ${p.quality_score ?? "n/a"}/100`;const sections=["product_descriptions","promotional_text","social_media","visual_concepts","video_narration"];tabs.replaceChildren(...sections.map(s=>{const b=document.createElement("button");b.className=`tab ${s===active?"active":""}`;b.textContent=s.replaceAll("_"," ");b.onclick=()=>{active=s;show()};return b}));output.textContent=JSON.stringify(p[active],null,2);results.hidden=false}
+document.querySelector("#form").onsubmit=async e=>{e.preventDefault();status.textContent="Generating…";const v=id=>document.querySelector("#"+id).value;const body={product:{name:v("name"),category:v("category"),key_features:v("features").split("\n").map(x=>x.trim()).filter(Boolean),price_offer:v("offer")||null,unique_selling_point:v("usp"),brand_name:v("brand"),brand_tone:v("tone"),language:"English"},audiences:[{preset:audience.value}]};try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});if(!r.ok)throw new Error((await r.json()).message||"Generation failed");packages=await r.json();status.textContent="Ready";show()}catch(err){status.textContent=err.message}};
+document.querySelectorAll(".export").forEach(b=>b.onclick=async()=>{if(!packages.length)return;const v=id=>document.querySelector("#"+id).value;const body={product:{name:v("name"),category:v("category"),key_features:v("features").split("\n").map(x=>x.trim()).filter(Boolean),price_offer:v("offer")||null,unique_selling_point:v("usp"),brand_name:v("brand"),brand_tone:v("tone"),language:"English"},audiences:[{preset:audience.value}]};const r=await fetch(`/api/export/${b.dataset.format}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const blob=await r.blob(),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`adforge-${b.dataset.format}`;a.click()});
+loadAudiences();
+</script></body></html>

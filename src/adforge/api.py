@@ -13,6 +13,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 from adforge import __version__
 from adforge.audiences import list_profiles
 from adforge.config import Settings, get_settings
+from adforge.exporters import to_docx, to_json, to_markdown, to_pdf, to_zip
 from adforge.generation import provider_for
 from adforge.models import AdPackage, AudienceProfile, GenerateRequest
 
@@ -167,6 +168,32 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             provider.generate(request.product, audience)
             for audience in request.audiences
         ]
+
+    @application.post("/api/export/{format_name}")
+    def export_package(format_name: str, request: GenerateRequest) -> Response:
+        """Generate one package and export it in the requested format."""
+        package = provider_for(runtime_settings).generate(
+            request.product, request.audiences[0]
+        )
+        exporters = {
+            "json": (to_json, "application/json", "package.json"),
+            "markdown": (to_markdown, "text/markdown", "package.md"),
+            "docx": (
+                to_docx,
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "package.docx",
+            ),
+            "pdf": (to_pdf, "application/pdf", "package.pdf"),
+            "zip": (to_zip, "application/zip", "campaign-kit.zip"),
+        }
+        if format_name not in exporters:
+            raise HTTPException(status_code=422, detail="unsupported export format")
+        exporter, media_type, filename = exporters[format_name]
+        return Response(
+            content=exporter(package),
+            media_type=media_type,
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        )
 
     application.mount("/static", StaticFiles(directory=static_dir), name="static")
     return application
