@@ -11,8 +11,9 @@ from fastapi.staticfiles import StaticFiles
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from adforge import __version__
+from adforge.audiences import list_profiles
 from adforge.config import Settings, get_settings
-from adforge.models import GenerateRequest
+from adforge.models import AudienceProfile, GenerateRequest
 
 
 class RequestSizeLimitMiddleware:
@@ -121,6 +122,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "service": runtime_settings.app_name,
             "version": __version__,
         }
+
+    @application.get("/api/audiences", response_model=list[AudienceProfile])
+    def audiences() -> list[AudienceProfile]:
+        """List the documented audience presets."""
+        return list_profiles()
 
     @application.post("/api/generate", status_code=501)
     def generate(_: GenerateRequest) -> JSONResponse:

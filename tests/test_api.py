@@ -26,6 +26,12 @@ def test_health_endpoint() -> None:
     assert response.json()["status"] == "ok"
 
 
+def test_audiences_endpoint_lists_documented_profiles() -> None:
+    response = TestClient(app).get("/api/audiences")
+    assert response.status_code == 200
+    assert len(response.json()) == 9
+
+
 def test_invalid_generate_request_has_consistent_error_shape() -> None:
     response = TestClient(app).post("/api/generate", json={})
     assert response.status_code == 422

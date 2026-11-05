@@ -7,7 +7,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from adforge.audiences import PRESET_IDS
+from adforge.audiences.constants import PRESET_IDS
 
 BrandTone = Literal["playful", "premium", "trustworthy", "bold"]
 CampaignGoal = Literal["awareness", "conversion", "launch", "seasonal_sale"]
@@ -62,6 +62,29 @@ class CustomAudience(BaseModel):
     pain_points: list[StringItem] = Field(default_factory=list, max_length=20)
     preferred_platforms: list[StringItem] = Field(default_factory=list, max_length=10)
     budget_sensitivity: Literal["low", "medium", "high"] = "medium"
+
+
+class AudienceProfile(BaseModel):
+    """Normalized audience strategy used by the adaptation engine."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    name: str
+    tone: str
+    vocabulary: list[StringItem] = Field(default_factory=list, max_length=20)
+    flesch_target_min: float = Field(ge=0, le=100)
+    flesch_target_max: float = Field(ge=0, le=100)
+    sentence_length: str
+    emoji_density: str
+    slang_density: str
+    emotional_triggers: list[StringItem] = Field(default_factory=list, max_length=10)
+    objections: list[StringItem] = Field(default_factory=list, max_length=10)
+    benefit_priority: list[StringItem] = Field(default_factory=list, max_length=10)
+    platform_mix: list[StringItem] = Field(default_factory=list, max_length=10)
+    imagery_style: str
+    cta_style: str
+    humor_level: str
 
 
 class AudienceSelection(BaseModel):
@@ -123,6 +146,10 @@ class CreativeBrief(BaseModel):
     tone: str | None = Field(default=None, max_length=80)
     cta: str | None = Field(default=None, max_length=120)
     channel_emphasis: list[StringItem] = Field(default_factory=list, max_length=10)
+    audience_profile_id: str | None = Field(default=None, max_length=80)
+    reading_level_target: str | None = Field(default=None, max_length=80)
+    imagery_style: str | None = Field(default=None, max_length=160)
+    humor_level: str | None = Field(default=None, max_length=40)
 
 
 class ProductDescriptions(BaseModel):

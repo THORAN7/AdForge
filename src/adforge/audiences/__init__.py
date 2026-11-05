@@ -1,15 +1,13 @@
-"""Audience registry boundary used by input validation."""
+"""Audience registry and adaptation public API."""
 
-PRESET_IDS = frozenset(
-    {
-        "gen_z_students",
-        "young_professionals",
-        "working_parents",
-        "fitness_enthusiasts",
-        "seniors",
-        "small_business_owners",
-        "budget_shoppers",
-        "luxury_buyers",
-        "tech_early_adopters",
-    }
-)
+from .adapter import build_creative_brief, profile_for
+from .constants import PRESET_IDS
+from .registry import list_profiles, load_profile
+
+__all__ = [
+    "PRESET_IDS",
+    "build_creative_brief",
+    "list_profiles",
+    "load_profile",
+    "profile_for",
+]
