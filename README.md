@@ -1,4 +1,4 @@
-# AdForge Studio
+# AdForge
 
 <p align="center">
   <strong>Grounded AI campaign generation for real product facts.</strong><br>
@@ -16,7 +16,7 @@
   <img src="docs/images/adforge-flow.svg" alt="Animated AdForge campaign generation flow" width="900">
 </p>
 
-AdForge Studio transforms structured product information and a selected
+AdForge transforms structured product information and a selected
 audience into one consistent campaign package:
 
 **Product descriptions · Promotional copy · Social media · Visual concepts ·
@@ -82,7 +82,7 @@ Useful URLs:
 
 | URL | Description |
 |---|---|
-| <http://127.0.0.1:8000/> | AdForge Studio browser app |
+| <http://127.0.0.1:8000/> | AdForge browser app |
 | <http://127.0.0.1:8000/docs> | Interactive Swagger API |
 | <http://127.0.0.1:8000/api/health> | Health check |
 
@@ -230,4 +230,4 @@ See [docs/COMPLIANCE.md](docs/COMPLIANCE.md),
 
 ## License
 
-AdForge Studio is released under the [MIT License](LICENSE).
+AdForge is released under the [MIT License](LICENSE).
