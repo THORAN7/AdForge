@@ -1,33 +1,60 @@
-# AdForge
+# AdForge Studio
 
-**AdForge turns product facts into a complete, audience-adapted advertising
-package.**
+<p align="center">
+  <strong>Grounded AI campaign generation for real product facts.</strong><br>
+  Create a complete, audience-adapted advertising package in seconds.
+</p>
 
-It generates product descriptions, promotional copy, social posts, visual
-concepts, and video narration. The default mode is deterministic, offline, and
-requires **no API key**.
+<p align="center">
+  <a href="http://127.0.0.1:8000/"><img src="https://img.shields.io/badge/local--first-offline-0b1020?style=for-the-badge" alt="Local first"></a>
+  <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11 or newer">
+  <img src="https://img.shields.io/badge/FastAPI-API-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge" alt="MIT License">
+</p>
 
-## What it includes
+<p align="center">
+  <img src="docs/images/adforge-flow.svg" alt="Animated AdForge campaign generation flow" width="900">
+</p>
 
-- Audience-aware campaign generation
-- Product descriptions, promotion, social media, visuals, and video scripts
-- Claim and consistency checks
-- Local SVG visual previews
-- JSON, Markdown, DOCX, PDF, and ZIP exports
-- FastAPI backend and browser-based campaign wizard
-- Optional OpenAI or Anthropic provider with explicit opt-in
+AdForge Studio transforms structured product information and a selected
+audience into one consistent campaign package:
 
-## Run on Windows PowerShell
+**Product descriptions · Promotional copy · Social media · Visual concepts ·
+Video narration**
 
-### 1. Open the project folder
+The default provider is deterministic and offline. No API key, external image
+service, or hosted model is required to run the project locally.
+
+## Why AdForge?
+
+- **Grounded:** generated claims are based on supplied product facts.
+- **Audience-aware:** messaging changes by audience strategy, not just by
+  swapping adjectives.
+- **Consistent:** product name, offer, USP, tone, and CTA are carried across
+  the package.
+- **Practical:** preview content in the browser and export a campaign kit.
+- **Private by default:** external LLM calls require explicit opt-in.
+
+## Generated package
+
+| Section | Included |
+|---|---|
+| Descriptions | One-liner, short and long copy, SEO title/meta, feature bullets |
+| Promotion | Headlines, taglines, benefit/emotion/urgency variants, CTAs, email copy, Google Ads |
+| Social | Instagram, Facebook, X/Twitter, LinkedIn, TikTok/Reels, 7-day calendar |
+| Visuals | Art direction, palette, typography, hero concepts, poster layout, SVG previews |
+| Video | 15-second, 30-second, and 60-second scene scripts plus SSML |
+| Review | Quality score, consistency checks, claim-safety warnings, platform checks |
+
+## Quick start — Windows PowerShell
+
+Open PowerShell in the project directory:
 
 ```powershell
 cd "C:\Users\thora\OneDrive\Documents\Agentic AI 2"
 ```
 
-### 2. Create or activate the virtual environment
-
-Create it only if it does not already exist:
+Create the virtual environment only if it does not exist:
 
 ```powershell
 if (-not (Test-Path .venv\Scripts\python.exe)) {
@@ -35,101 +62,67 @@ if (-not (Test-Path .venv\Scripts\python.exe)) {
 }
 ```
 
-Activate it:
+Activate and install:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev,documents]"
 ```
 
-If PowerShell blocks the script, run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\.venv\Scripts\Activate.ps1
-```
-
-If `.venv` is already active, do not create it again. The prompt will usually
-start with `(.venv)`.
-
-### 3. Install dependencies
-
-For normal development:
-
-```powershell
-python -m pip install -e ".[dev]"
-```
-
-For DOCX and PDF exports too:
-
-```powershell
-python -m pip install -e ".[documents]"
-```
-
-### 4. Start AdForge
-
-Keep this PowerShell window open:
+Start the app:
 
 ```powershell
 python -m uvicorn adforge.api:app --host 127.0.0.1 --port 8000
 ```
 
-### 5. Open the application
+Open **<http://127.0.0.1:8000/>**. Enter a product, add three to eight
+features, choose an audience, and select **Generate campaign**.
 
-Open this URL in your browser:
+Useful URLs:
 
-**<http://127.0.0.1:8000/>**
-
-You can also open:
-
-| URL | Purpose |
+| URL | Description |
 |---|---|
-| <http://127.0.0.1:8000/> | AdForge campaign wizard |
-| <http://127.0.0.1:8000/docs> | Interactive API documentation |
-| <http://127.0.0.1:8000/api/health> | Service health check |
+| <http://127.0.0.1:8000/> | AdForge Studio browser app |
+| <http://127.0.0.1:8000/docs> | Interactive Swagger API |
+| <http://127.0.0.1:8000/api/health> | Health check |
 
-To stop the server, press **Ctrl+C**.
+Stop the server with `Ctrl+C`.
 
-## How to use the wizard
+> **If the page looks outdated:** stop Uvicorn, start it again, and press
+> `Ctrl+F5` in the browser.
 
-1. Enter the product name, category, brand, tone, and unique selling point.
-2. Enter **3–8 key features**, one per line.
-3. Enter an optional price or offer.
-4. Select an audience.
-5. Click **Generate campaign**.
-6. Review the Descriptions, Promotion, Social, Visual, and Video tabs.
-7. Download JSON, Markdown, or a ZIP campaign kit.
+## Try it with an example
 
-## Test and lint the project
+Use these values in the browser:
 
-Open a second PowerShell window, enter the project folder, and activate the
-environment:
-
-```powershell
-cd "C:\Users\thora\OneDrive\Documents\Agentic AI 2"
-.\.venv\Scripts\Activate.ps1
+```text
+Product: FocusGlow Desk Lamp
+Category: Lighting
+Brand: BrightCo
+Tone: Trustworthy
+Offer: $19.99
+USP: Focused light for flexible workspaces.
 ```
 
-Run the complete validation:
+Features, one per line:
 
-```powershell
-python -m pytest
-python -m ruff check .
-python -m ruff format --check .
-python -m mypy src
+```text
+Adjustable neck
+Portable design
+USB-C charging
+Compact workspace shape
 ```
-
-The test suite includes coverage enforcement. The project requires at least
-85% coverage.
 
 ## API example
 
-With the server running, save this request as `request.json`:
+Save this as `request.json` while the server is running:
 
 ```json
 {
   "product": {
-    "name": "Desk Lamp",
+    "name": "FocusGlow Desk Lamp",
     "category": "lighting",
-    "key_features": ["adjustable", "portable", "USB-C"],
+    "key_features": ["adjustable neck", "portable design", "USB-C charging"],
     "price_offer": "$19.99",
     "unique_selling_point": "Focused light for flexible workspaces.",
     "brand_name": "BrightCo",
@@ -142,7 +135,7 @@ With the server running, save this request as `request.json`:
 }
 ```
 
-Send it to the generation endpoint:
+Generate a package:
 
 ```powershell
 curl.exe -X POST http://127.0.0.1:8000/api/generate `
@@ -150,85 +143,91 @@ curl.exe -X POST http://127.0.0.1:8000/api/generate `
   --data-binary "@request.json"
 ```
 
-Available main endpoints:
+Main endpoints:
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | `/api/health` | Check service status |
-| `GET` | `/api/audiences` | List audience presets |
-| `POST` | `/api/generate` | Generate campaign packages |
-| `POST` | `/api/generate/compare` | Generate packages for multiple audiences |
-| `POST` | `/api/regenerate/{section}` | Regenerate a campaign section |
-| `POST` | `/api/export/{format}` | Export as `json`, `markdown`, `docx`, `pdf`, or `zip` |
+| `GET` | `/api/health` | Service status |
+| `GET` | `/api/audiences` | Audience presets |
+| `POST` | `/api/generate` | Generate one or more packages |
+| `POST` | `/api/generate/compare` | Compare selected audiences |
+| `POST` | `/api/regenerate/{section}` | Regenerate a package section |
+| `POST` | `/api/export/{format}` | Export `json`, `markdown`, `docx`, `pdf`, or `zip` |
 
-## Optional hosted LLM mode
-
-AdForge works without a hosted model. To enable one, set these environment
-variables before starting the server:
+## Development checks
 
 ```powershell
-$env:ADFORGE_ALLOW_EXTERNAL_LLM = "true"
-$env:ADFORGE_LLM_PROVIDER = "openai"
-$env:ADFORGE_LLM_API_KEY = "your-api-key"
+.\.venv\Scripts\Activate.ps1
+python -m pytest
+python -m ruff check .
+python -m ruff format --check .
+python -m mypy src
 ```
 
-Use `anthropic` instead of `openai` when appropriate. External generation is
-disabled unless `ADFORGE_ALLOW_EXTERNAL_LLM=true` is explicitly set. Never
-commit API keys or real customer data.
+The configured minimum test coverage is **85%**.
 
-## Docker
-
-Install and start Docker Desktop, then run:
+Windows does not normally include GNU Make. Use the equivalent wrapper:
 
 ```powershell
-docker compose up --build
-```
-
-Open <http://127.0.0.1:8000/>. Stop the container with:
-
-```powershell
-docker compose down
-```
-
-## Windows command wrapper
-
-GNU Make is not normally installed on Windows. The PowerShell wrapper provides
-equivalent commands:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 install
-powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 run
 powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 test
 powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 lint
 powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 format-check
 powershell -ExecutionPolicy Bypass -File .\scripts\adforge.ps1 typecheck
 ```
 
-## Troubleshooting
+## Optional hosted LLM
 
-**The browser shows JSON instead of the app:** make sure you open
-`http://127.0.0.1:8000/`, not `/api/health` or `/docs`.
-
-**Port 8000 is already in use:** stop the old server with `Ctrl+C`, or start
-another port:
+Offline mode is the default. To explicitly allow external generation:
 
 ```powershell
-python -m uvicorn adforge.api:app --host 127.0.0.1 --port 8001
+$env:ADFORGE_ALLOW_EXTERNAL_LLM = "true"
+$env:ADFORGE_LLM_PROVIDER = "openai"
+$env:ADFORGE_LLM_API_KEY = "your-api-key"
+python -m uvicorn adforge.api:app --host 127.0.0.1 --port 8000
 ```
 
-Then open <http://127.0.0.1:8001/>.
+Set `ADFORGE_LLM_PROVIDER` to `anthropic` for Anthropic. Never commit API keys
+or real customer data. Review all generated claims before publication.
 
-**`make` is not recognized:** use the PowerShell wrapper above or run the
-`python -m` commands directly.
+## Docker
 
-**Virtual environment permission error:** do not recreate an existing `.venv`.
-Activate it and continue with dependency installation.
+With Docker Desktop running:
+
+```powershell
+docker compose up --build
+```
+
+Open <http://127.0.0.1:8000/> and stop with:
+
+```powershell
+docker compose down
+```
+
+## Project structure
+
+```text
+src/adforge/
+├── api.py                 # FastAPI app and routes
+├── models.py              # Typed request and AdPackage contracts
+├── audiences/             # Presets and audience adaptation
+├── generation/            # Offline and hosted providers
+├── checks/                # Claims, consistency, platform, quality checks
+├── exporters/             # JSON, Markdown, DOCX, PDF, ZIP
+├── visuals/               # SVG previews and ImageProvider interface
+└── static/                # Browser campaign wizard
+```
 
 ## Responsible use
 
-Generated advertising content is a draft. Review every claim, price, offer,
-image, and platform-specific asset before publishing. Follow applicable
-advertising law, disclosure requirements, and platform policies.
+AdForge outputs are drafts, not legal or marketing approval. Verify every
+claim, price, offer, visual, disclosure, and platform-specific asset. Follow
+applicable advertising law and platform policies. Product fields are treated as
+untrusted data and external LLM use is opt-in.
 
-See `docs/DECISIONS.md` for implementation decisions and `docs/COMPLIANCE.md`
-for the current compliance rules.
+See [docs/COMPLIANCE.md](docs/COMPLIANCE.md),
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), and
+[docs/DECISIONS.md](docs/DECISIONS.md).
+
+## License
+
+AdForge Studio is released under the [MIT License](LICENSE).
