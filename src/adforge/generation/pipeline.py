@@ -3,6 +3,7 @@
 from datetime import UTC, datetime
 
 from adforge.audiences import build_creative_brief, profile_for
+from adforge.checks import review_package
 from adforge.models import (
     AdCopyVariant,
     AdPackage,
@@ -130,7 +131,7 @@ def _social(
     lead = brief.lead_benefit or product.unique_selling_point
     caption = (
         f"{product.name} is built for {lead.lower()}. "
-        f"{product.unique_selling_point} #ad"
+        f"{product.unique_selling_point} {_offer_line(product)} #ad"
     )
     calendar = [
         CalendarPost(
@@ -186,7 +187,7 @@ def _visuals(product: ProductInput, brief: CreativeBrief) -> VisualConcepts:
     return VisualConcepts(
         art_direction=(
             f"{brief.imagery_style or 'clean product-in-use imagery'}; "
-            f"{product.brand_tone} mood; clear product focus."
+            f"{product.brand_tone} mood; clear product focus. {_offer_line(product)}"
         ),
         color_palette=palette,
         typography=["Readable sans-serif headline", "Accessible body text"],
@@ -196,7 +197,8 @@ def _visuals(product: ProductInput, brief: CreativeBrief) -> VisualConcepts:
             f"Audience-relevant moment featuring {product.name}",
         ],
         poster_layout=(
-            f"Headline at top; {product.name} centered; CTA '{brief.cta}' at bottom."
+            f"Headline at top; {product.name} centered; "
+            f"CTA '{brief.cta}' at bottom. {_offer_line(product)}"
         ),
         storyboard=[
             f"Frame {number}: show {product.name} and supplied product facts."
@@ -211,7 +213,7 @@ def _video(product: ProductInput, brief: CreativeBrief) -> VideoNarration:
         VideoScene(
             timestamp="0-3s",
             visual=f"Introduce {product.name}",
-            voiceover=voice,
+            voiceover=f"{voice} {_offer_line(product)}",
             on_screen_text=product.name,
             music_sfx="Light, clear opening",
         ),
@@ -279,4 +281,4 @@ def generate_package(product: ProductInput, audience: AudienceSelection) -> AdPa
         consistency_warnings=[],
         quality_score=100,
     )
-    return package
+    return review_package(package)
