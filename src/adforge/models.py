@@ -5,7 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from adforge.audiences.constants import PRESET_IDS
 
@@ -122,6 +122,12 @@ class ProductInput(BaseModel):
     campaign_goal: CampaignGoal | None = None
     language: str = Field(default="English", min_length=2, max_length=40)
     offer: Offer | None = None
+
+    @field_validator("brand_tone", mode="before")
+    @classmethod
+    def normalize_brand_tone(cls, value: object) -> object:
+        """Accept normal user capitalization while preserving the enum contract."""
+        return value.lower().strip() if isinstance(value, str) else value
 
     @model_validator(mode="after")
     def validate_language_and_offer(self) -> "ProductInput":
