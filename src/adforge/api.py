@@ -13,7 +13,8 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 from adforge import __version__
 from adforge.audiences import list_profiles
 from adforge.config import Settings, get_settings
-from adforge.models import AudienceProfile, GenerateRequest
+from adforge.generation import TemplateProvider
+from adforge.models import AdPackage, AudienceProfile, GenerateRequest
 
 
 class RequestSizeLimitMiddleware:
@@ -128,15 +129,44 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         """List the documented audience presets."""
         return list_profiles()
 
-    @application.post("/api/generate", status_code=501)
-    def generate(_: GenerateRequest) -> JSONResponse:
-        """Reserve the generation contract for the next implementation phase."""
-        return _error(
-            "generation_not_implemented",
-            "Generation is not implemented yet.",
-            {"planned_phase": 3},
-            501,
-        )
+    @application.post("/api/generate", response_model=list[AdPackage])
+    def generate(request: GenerateRequest) -> list[AdPackage]:
+        """Generate one deterministic package per selected audience."""
+        provider = TemplateProvider()
+        return [
+            provider.generate(request.product, audience)
+            for audience in request.audiences
+        ]
+
+    @application.post("/api/generate/compare", response_model=list[AdPackage])
+    def compare(request: GenerateRequest) -> list[AdPackage]:
+        """Generate packages for side-by-side audience comparison."""
+        provider = TemplateProvider()
+        return [
+            provider.generate(request.product, audience)
+            for audience in request.audiences
+        ]
+
+    @application.post("/api/regenerate/{section}", response_model=list[AdPackage])
+    def regenerate(section: str, request: GenerateRequest) -> list[AdPackage]:
+        """Regenerate a supported section while preserving the package contract."""
+        valid_sections = {
+            "product_descriptions",
+            "promotional_text",
+            "social_media",
+            "visual_concepts",
+            "video_narration",
+        }
+        if section not in valid_sections:
+            raise HTTPException(
+                status_code=422,
+                detail=f"unsupported section: {section}",
+            )
+        provider = TemplateProvider()
+        return [
+            provider.generate(request.product, audience)
+            for audience in request.audiences
+        ]
 
     application.mount("/static", StaticFiles(directory=static_dir), name="static")
     return application

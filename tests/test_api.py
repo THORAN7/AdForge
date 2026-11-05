@@ -38,7 +38,7 @@ def test_invalid_generate_request_has_consistent_error_shape() -> None:
     assert set(response.json()) == {"error", "message", "details"}
 
 
-def test_generate_returns_consistent_not_implemented_error() -> None:
+def test_generate_returns_typed_packages() -> None:
     payload = {
         "product": {
             "name": "Focus Lamp",
@@ -51,8 +51,14 @@ def test_generate_returns_consistent_not_implemented_error() -> None:
         "audiences": [{"preset": "gen_z_students"}],
     }
     response = TestClient(app).post("/api/generate", json=payload)
-    assert response.status_code == 501
-    assert response.json()["error"] == "generation_not_implemented"
+    assert response.status_code == 200
+    package = response.json()[0]
+    assert package["product"]["name"] == "Focus Lamp"
+    assert package["product_descriptions"]["one_liner"]
+    assert package["promotional_text"]["headlines"]
+    assert package["social_media"]["instagram"]["caption"]
+    assert package["visual_concepts"]["hero_concepts"]
+    assert package["video_narration"]["script_15s"]
 
 
 def test_request_size_limit_has_consistent_error_shape() -> None:
