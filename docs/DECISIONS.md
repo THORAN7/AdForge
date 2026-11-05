@@ -10,4 +10,5 @@
   without unbounded generation cost.
 - **Typed contracts first:** generation stages will be added behind the Pydantic
   models so API, UI, and exporters share one schema.
-
+- **Windows developer path:** because GNU Make is not included with Windows,
+  `scripts/adforge.ps1` provides equivalent commands using the project venv.
