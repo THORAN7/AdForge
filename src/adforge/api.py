@@ -1,6 +1,9 @@
 """FastAPI application entry point and stable health endpoint."""
 
+from pathlib import Path
+
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 
 from adforge import __version__
 from adforge.config import get_settings
@@ -8,18 +11,13 @@ from adforge.models import GenerateRequest
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version=__version__)
+STATIC_INDEX = Path(__file__).resolve().parents[2] / "static" / "index.html"
 
 
 @app.get("/")
-def root() -> dict[str, str]:
-    """Provide a useful landing response for local development."""
-    return {
-        "service": settings.app_name,
-        "version": __version__,
-        "message": "AdForge API is running.",
-        "health": "/api/health",
-        "docs": "/docs",
-    }
+def root() -> FileResponse:
+    """Serve the local browser landing page."""
+    return FileResponse(STATIC_INDEX, media_type="text/html")
 
 
 @app.get("/api/health")

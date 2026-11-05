@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AdForge product advertisement generator">
+    <title>AdForge | Product advertisement generator</title>
+    <style>
+      :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; color: #e7eefb; background: #0b1020; }
+      main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 28px 0 64px; }
+      nav { display: flex; justify-content: space-between; align-items: center; }
+      .brand { color: #fff; font-size: 1.3rem; font-weight: 800; letter-spacing: -.04em; }
+      .brand span { color: #7dd3fc; }
+      nav a { color: #a9b8d2; text-decoration: none; margin-left: 20px; }
+      nav a:hover, nav a:focus { color: #fff; }
+      .hero { display: grid; grid-template-columns: 1.2fr .8fr; gap: 48px; align-items: center; padding: 100px 0 80px; }
+      .eyebrow { color: #7dd3fc; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: .75rem; }
+      h1 { max-width: 720px; margin: 14px 0 20px; font-size: clamp(2.6rem, 7vw, 5.6rem); line-height: .96; letter-spacing: -.07em; }
+      .intro { max-width: 600px; color: #a9b8d2; font-size: 1.15rem; line-height: 1.65; }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+      .button { display: inline-block; padding: 12px 18px; border-radius: 10px; color: #06111f; background: #7dd3fc; font-weight: 800; text-decoration: none; }
+      .button.secondary { color: #e7eefb; background: #18243a; border: 1px solid #2a3a58; }
+      .card { padding: 28px; border: 1px solid #263756; border-radius: 20px; background: linear-gradient(145deg, #15223a, #10182b); box-shadow: 0 24px 70px #02061766; }
+      .card h2 { margin-top: 0; }
+      .status { display: flex; align-items: center; gap: 10px; color: #a9b8d2; }
+      .dot { width: 10px; height: 10px; border-radius: 50%; background: #34d399; box-shadow: 0 0 14px #34d399; }
+      .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .feature { padding: 22px; border-top: 2px solid #2a3a58; color: #a9b8d2; line-height: 1.55; }
+      .feature strong { display: block; margin-bottom: 8px; color: #fff; }
+      footer { margin-top: 70px; color: #6f809d; font-size: .9rem; }
+      @media (max-width: 760px) { .hero { grid-template-columns: 1fr; padding: 70px 0 50px; } .features { grid-template-columns: 1fr; } nav a { margin-left: 10px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav aria-label="Primary navigation">
+        <div class="brand">Ad<span>Forge</span></div>
+        <div><a href="/docs">API docs</a><a href="/api/health">Health</a></div>
+      </nav>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">Grounded campaign creation</div>
+          <h1>Turn product facts into better ads.</h1>
+          <p class="intro">AdForge creates audience-aware product descriptions, promotional copy, social content, visual concepts, and video narration from the facts you provide.</p>
+          <div class="actions">
+            <a class="button" href="/docs">Open API docs</a>
+            <a class="button secondary" href="/api/health">Check service health</a>
+          </div>
+        </div>
+        <aside class="card" aria-labelledby="status-title">
+          <h2 id="status-title">Local service status</h2>
+          <p class="status"><span class="dot" aria-hidden="true"></span> AdForge API is running</p>
+          <p>Phase 1 is active: typed product and audience contracts are ready. The offline generation pipeline is added in the next phase.</p>
+        </aside>
+      </section>
+      <section class="features" aria-label="AdForge capabilities">
+        <div class="feature"><strong>Audience-aware</strong>Adapt messaging for different customer profiles without relying on harmful stereotypes.</div>
+        <div class="feature"><strong>Fact-grounded</strong>Keep generated claims tied to the product information you provide.</div>
+        <div class="feature"><strong>Local-first</strong>Run privately on your machine with no API key required for the offline mode.</div>
+      </section>
+      <footer>AdForge 0.1.0 · Local development interface</footer>
+    </main>
+  </body>
+</html>
